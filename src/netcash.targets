@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="GenerateISOCurrencies">
+    <XslTransformation XslInputPath="iso-currencies-to-fs.xsl"
+                       XmlInputPaths="iso-4217-currencies.xml"
+                       OutputPaths="ISOCurrencies.fs" />
+  </Target>
+  <Target Name="Format">
+    <!-- fantomas is unable to recognize some syntax in Bindings.fs -->
+    <Exec Command="dotnet fantomas %(Compile.Identity)"
+          Condition="%(Compile.Identity) != 'Bindings.fs'" />
+  </Target>
+</Project>

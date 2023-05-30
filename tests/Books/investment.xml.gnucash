@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<gnc-v2
+     xmlns:gnc="http://www.gnucash.org/XML/gnc"
+     xmlns:act="http://www.gnucash.org/XML/act"
+     xmlns:book="http://www.gnucash.org/XML/book"
+     xmlns:cd="http://www.gnucash.org/XML/cd"
+     xmlns:cmdty="http://www.gnucash.org/XML/cmdty"
+     xmlns:price="http://www.gnucash.org/XML/price"
+     xmlns:slot="http://www.gnucash.org/XML/slot"
+     xmlns:split="http://www.gnucash.org/XML/split"
+     xmlns:sx="http://www.gnucash.org/XML/sx"
+     xmlns:trn="http://www.gnucash.org/XML/trn"
+     xmlns:ts="http://www.gnucash.org/XML/ts"
+     xmlns:fs="http://www.gnucash.org/XML/fs"
+     xmlns:bgt="http://www.gnucash.org/XML/bgt"
+     xmlns:recurrence="http://www.gnucash.org/XML/recurrence"
+     xmlns:lot="http://www.gnucash.org/XML/lot"
+     xmlns:addr="http://www.gnucash.org/XML/addr"
+     xmlns:billterm="http://www.gnucash.org/XML/billterm"
+     xmlns:bt-days="http://www.gnucash.org/XML/bt-days"
+     xmlns:bt-prox="http://www.gnucash.org/XML/bt-prox"
+     xmlns:cust="http://www.gnucash.org/XML/cust"
+     xmlns:employee="http://www.gnucash.org/XML/employee"
+     xmlns:entry="http://www.gnucash.org/XML/entry"
+     xmlns:invoice="http://www.gnucash.org/XML/invoice"
+     xmlns:job="http://www.gnucash.org/XML/job"
+     xmlns:order="http://www.gnucash.org/XML/order"
+     xmlns:owner="http://www.gnucash.org/XML/owner"
+     xmlns:taxtable="http://www.gnucash.org/XML/taxtable"
+     xmlns:tte="http://www.gnucash.org/XML/tte"
+     xmlns:vendor="http://www.gnucash.org/XML/vendor">
+<gnc:count-data cd:type="book">1</gnc:count-data>
+<gnc:book version="2.0.0">
+<book:id type="guid">4b46dd77835b42d7a30536d190c82420</book:id>
+<book:slots>
+  <slot>
+    <slot:key>counter_formats</slot:key>
+    <slot:value type="frame"/>
+  </slot>
+  <slot>
+    <slot:key>features</slot:key>
+    <slot:value type="frame">
+      <slot>
+        <slot:key>Register sort and filter settings stored in .gcm file</slot:key>
+        <slot:value type="string">Store the register sort and filter settings in .gcm metadata file (requires at least GnuCash 3.3)</slot:value>
+      </slot>
+    </slot:value>
+  </slot>
+  <slot>
+    <slot:key>remove-color-not-set-slots</slot:key>
+    <slot:value type="string">true</slot:value>
+  </slot>
+</book:slots>
+<gnc:count-data cd:type="commodity">1</gnc:count-data>
+<gnc:count-data cd:type="account">18</gnc:count-data>
+<gnc:count-data cd:type="transaction">1</gnc:count-data>
+<gnc:commodity version="2.0.0">
+  <cmdty:space>CURRENCY</cmdty:space>
+  <cmdty:id>USD</cmdty:id>
+  <cmdty:get_quotes/>
+  <cmdty:quote_source>currency</cmdty:quote_source>
+  <cmdty:quote_tz/>
+</gnc:commodity>
+<gnc:commodity version="2.0.0">
+  <cmdty:space>CURRENCY</cmdty:space>
+  <cmdty:id>XTS</cmdty:id>
+  <cmdty:get_quotes/>
+  <cmdty:quote_source>currency</cmdty:quote_source>
+  <cmdty:quote_tz/>
+</gnc:commodity>
+<gnc:commodity version="2.0.0">
+  <cmdty:space>template</cmdty:space>
+  <cmdty:id>template</cmdty:id>
+  <cmdty:name>template</cmdty:name>
+  <cmdty:xcode>template</cmdty:xcode>
+  <cmdty:fraction>1</cmdty:fraction>
+</gnc:commodity>
+<gnc:account version="2.0.0">
+  <act:name>Root Account</act:name>
+  <act:id type="guid">a4fda1b0d9e241e19b37e1f60a8a04c3</act:id>
+  <act:type>ROOT</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>USD</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>100</act:commodity-scu>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Assets</act:name>
+  <act:id type="guid">58881119c69847558f635350411845ae</act:id>
+  <act:type>ASSET</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Assets</act:description>
+  <act:slots>
+    <slot>
+      <slot:key>placeholder</slot:key>
+      <slot:value type="string">true</slot:value>
+    </slot>
+  </act:slots>
+  <act:parent type="guid">a4fda1b0d9e241e19b37e1f60a8a04c3</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Investments</act:name>
+  <act:id type="guid">6ac415969e5a4c11827abe1089c206e6</act:id>
+  <act:type>ASSET</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Investments</act:description>
+  <act:slots>
+    <slot>
+      <slot:key>placeholder</slot:key>
+      <slot:value type="string">true</slot:value>
+    </slot>
+  </act:slots>
+  <act:parent type="guid">58881119c69847558f635350411845ae</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Brokerage Account</act:name>
+  <act:id type="guid">4f008ade3f8a48bca16fcf143a2fad90</act:id>
+  <act:type>BANK</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Brokerage Account</act:description>
+  <act:parent type="guid">6ac415969e5a4c11827abe1089c206e6</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Bond</act:name>
+  <act:id type="guid">0644f8c446cd4239b5921ad259a84bd5</act:id>
+  <act:type>ASSET</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Bond</act:description>
+  <act:parent type="guid">4f008ade3f8a48bca16fcf143a2fad90</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Stock</act:name>
+  <act:id type="guid">cde53ed60f814bc48ad8499ec88b3bfb</act:id>
+  <act:type>ASSET</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Stock</act:description>
+  <act:parent type="guid">4f008ade3f8a48bca16fcf143a2fad90</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Market Index</act:name>
+  <act:id type="guid">c5e57b9c3e5d4539b9ffbd125b0aa8ff</act:id>
+  <act:type>ASSET</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Market Index</act:description>
+  <act:parent type="guid">4f008ade3f8a48bca16fcf143a2fad90</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Mutual Fund</act:name>
+  <act:id type="guid">d1a342d08b134e43b56b42228212f74d</act:id>
+  <act:type>ASSET</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Mutual Fund</act:description>
+  <act:parent type="guid">4f008ade3f8a48bca16fcf143a2fad90</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Bank ABC</act:name>
+  <act:id type="guid">52787daa5134476db6449084226ecd31</act:id>
+  <act:type>ASSET</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Bank ABC</act:description>
+  <act:parent type="guid">58881119c69847558f635350411845ae</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Income</act:name>
+  <act:id type="guid">fc73d86d4b47417eae0c911a6bd872b9</act:id>
+  <act:type>INCOME</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Income</act:description>
+  <act:slots>
+    <slot>
+      <slot:key>placeholder</slot:key>
+      <slot:value type="string">true</slot:value>
+    </slot>
+  </act:slots>
+  <act:parent type="guid">a4fda1b0d9e241e19b37e1f60a8a04c3</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Dividend Income</act:name>
+  <act:id type="guid">379251023a3244caa0ee753516050c6f</act:id>
+  <act:type>INCOME</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Dividend Income</act:description>
+  <act:parent type="guid">fc73d86d4b47417eae0c911a6bd872b9</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Interest Income</act:name>
+  <act:id type="guid">afcf23d33cbb4195a99c2ad78aea9640</act:id>
+  <act:type>INCOME</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Interest Income</act:description>
+  <act:parent type="guid">fc73d86d4b47417eae0c911a6bd872b9</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Bond Interest</act:name>
+  <act:id type="guid">f648237a228a466bba0e0627fa5ba31d</act:id>
+  <act:type>INCOME</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Bond Interest</act:description>
+  <act:parent type="guid">afcf23d33cbb4195a99c2ad78aea9640</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Realized Gains</act:name>
+  <act:id type="guid">00569d983971413785cdc9425457d181</act:id>
+  <act:type>INCOME</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Realized Gains</act:description>
+  <act:slots>
+    <slot>
+      <slot:key>placeholder</slot:key>
+      <slot:value type="string">true</slot:value>
+    </slot>
+  </act:slots>
+  <act:parent type="guid">fc73d86d4b47417eae0c911a6bd872b9</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Expenses</act:name>
+  <act:id type="guid">a388bab1aadc460e801cbbd9694f8784</act:id>
+  <act:type>EXPENSE</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Expenses</act:description>
+  <act:slots>
+    <slot>
+      <slot:key>placeholder</slot:key>
+      <slot:value type="string">true</slot:value>
+    </slot>
+  </act:slots>
+  <act:parent type="guid">a4fda1b0d9e241e19b37e1f60a8a04c3</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Commissions</act:name>
+  <act:id type="guid">d8d27cdc90044000ad60798a7d9b9431</act:id>
+  <act:type>EXPENSE</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Commissions</act:description>
+  <act:parent type="guid">a388bab1aadc460e801cbbd9694f8784</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Equity</act:name>
+  <act:id type="guid">3ddde82c73da4726ae1edc74da4fbad5</act:id>
+  <act:type>EQUITY</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Equity</act:description>
+  <act:parent type="guid">a4fda1b0d9e241e19b37e1f60a8a04c3</act:parent>
+</gnc:account>
+<gnc:account version="2.0.0">
+  <act:name>Opening Balances</act:name>
+  <act:id type="guid">d7631fd6ca094a04a5103d91ed091859</act:id>
+  <act:type>EQUITY</act:type>
+  <act:commodity>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>XTS</cmdty:id>
+  </act:commodity>
+  <act:commodity-scu>1000000</act:commodity-scu>
+  <act:description>Opening Balances</act:description>
+  <act:parent type="guid">3ddde82c73da4726ae1edc74da4fbad5</act:parent>
+</gnc:account>
+<gnc:transaction version="2.0.0">
+  <trn:id type="guid">4d2078be0d2542608d7d2f3ea16de16c</trn:id>
+  <trn:currency>
+    <cmdty:space>CURRENCY</cmdty:space>
+    <cmdty:id>USD</cmdty:id>
+  </trn:currency>
+  <trn:date-posted>
+    <ts:date>2020-01-01 10:59:00 +0000</ts:date>
+  </trn:date-posted>
+  <trn:date-entered>
+    <ts:date>2022-02-10 14:55:47 +0000</ts:date>
+  </trn:date-entered>
+  <trn:description></trn:description>
+  <trn:slots>
+    <slot>
+      <slot:key>date-posted</slot:key>
+      <slot:value type="gdate">
+        <gdate>2020-01-01</gdate>
+      </slot:value>
+    </slot>
+  </trn:slots>
+  <trn:splits>
+    <trn:split>
+      <split:id type="guid">babbb822f48f4dac937703aa54d14e11</split:id>
+      <split:reconciled-state>n</split:reconciled-state>
+      <split:value>100000000/100</split:value>
+      <split:quantity>1000000000000/1000000</split:quantity>
+      <split:account type="guid">52787daa5134476db6449084226ecd31</split:account>
+    </trn:split>
+    <trn:split>
+      <split:id type="guid">6cb48d87f0964c4bb455ca122bb4531e</split:id>
+      <split:reconciled-state>n</split:reconciled-state>
+      <split:value>-100000000/100</split:value>
+      <split:quantity>-1000000000000/1000000</split:quantity>
+      <split:account type="guid">d7631fd6ca094a04a5103d91ed091859</split:account>
+    </trn:split>
+  </trn:splits>
+</gnc:transaction>
+</gnc:book>
+</gnc-v2>
+

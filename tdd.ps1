@@ -1,0 +1,1 @@
+dotnet watch --project tests test --collect:"XPlat Code Coverage" --logger "console;verbosity=detailed"

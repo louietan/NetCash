@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="netcash.targets" />
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFramework>net6.0</TargetFramework>
+    <!-- implicit conversion; possible unverifiable code -->
+    <NoWarn>3391;9</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Assembly.fs" />
+    <Compile Include="Base.fs" />
+    <Compile Include="Extensions.fs" />
+    <Compile Include="Logging.fs" />
+    <Compile Include="NativeLibraries.fs" />
+    <Compile Include="Bindings.fs" />
+    <Compile Include="LibraryLoader.fs" />
+    <Compile Include="Marshalling.fs" />
+    <Compile Include="GncNumeric.fs" />
+    <Compile Include="GnuCashObject.fs" />
+    <Compile Include="Core.fs" />
+    <Compile Include="ISOCurrencies.fs" />
+    <Compile Include="Commodities.fs" />
+    <Compile Include="PriceDB.fs" />
+    <Compile Include="Uri.fs" />
+    <Compile Include="Errors.fs" />
+    <Compile Include="Book.fs" />
+    <Compile Include="Query.fs" />
+    <Compile Include="Helpers.fs" />
+    <Compile Include="Scrub.fs" />
+    <Compile Include="Engine.fs" />
+    <Compile Include="Preferences.fs" />
+  </ItemGroup>
+</Project>

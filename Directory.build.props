@@ -1,0 +1,13 @@
+<Project>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DefineConstants>x86</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DefineConstants>x64</DefineConstants>
+  </PropertyGroup>
+
+</Project>
