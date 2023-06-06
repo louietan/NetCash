@@ -236,7 +236,7 @@ void Scrub_Realized_Gains()
     var orphanGains = book.Accounts.First(a => a.Name.StartsWith("Orphaned Gains"));
     orphanGains.MoveSplits(realizedGains);
     // Delete the "Orphaned Gains - CURRENCY" account
-    book.DeleteAccount(orphanGains); // FIXME: ERROR <qof.engine> [qof_commit_edit()] unbalanced call - resetting (was -1)
+    book.DeleteAccount(orphanGains);
 
     // That's it.
 }

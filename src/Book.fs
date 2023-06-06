@@ -284,9 +284,9 @@ type Book private (session: nativeint) as self =
             invalidOp
                 "This account can not be deleted, because it still contains splits or sub-accounts. You have to move them to another account before deletion."
 
-        acct
-        |> GnuCashObject.nativeHandle
-        |> Bindings.xaccAccountDestroy
+        let a = GnuCashObject.nativeHandle acct
+        Bindings.xaccAccountBeginEdit a
+        Bindings.xaccAccountDestroy a
 
     /// <summary>Creates a new transaction.</summary>
     member self.NewTransaction([<Optional>] date, [<Optional>] currency: Commodity) =
