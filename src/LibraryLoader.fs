@@ -19,41 +19,15 @@ module Executables =
     let CLI = executableFileName "gnucash-cli"
     let GUI = executableFileName "gnucash"
 
-/// The installation path of GnuCash, e.g. "/opt/gnucash-unstable".
-/// NetCash will try determine this value by looking for PATH environment variable
-/// and conventional locations such as "/opt/gnucash" on *nix or "Program Files (x86)\gnucash" on Windows.
-/// If your installation path is none of the above, you have to specify this value before NetCash can work properly.
-[<CompiledName "GnuCashInstallationPath">]
-let mutable gnucashInstallationPath =
-    Environment
-        .GetEnvironmentVariable("PATH")
-        .Split(Path.PathSeparator)
-    |> Seq.tryFind (fun path -> File.Exists(Path.Join(path, Executables.CLI)))
-    |> Option.map Path.GetDirectoryName
-    |> Option.orElseWith (fun () ->
-        // Look for conventional installation locations.
-        if OperatingSystem.IsWindows() then
-            [ Environment.SpecialFolder.ProgramFiles
-              Environment.SpecialFolder.ProgramFilesX86 ]
-            |> Seq.map Environment.GetFolderPath
-        else
-            seq { "/opt" }
-        |> Seq.map (fun loc -> Path.Join(loc, "gnucash"))
-        |> Seq.tryFind (fun dir -> File.Exists(Path.Join(dir, "bin", Executables.CLI))))
-    |> Option.toObj
+type GnuCashRuntime =
+    { BinaryPath: string
+      LibraryPath: string }
 
-// Invoke `gnucash-cli --paths` to obtain path info about gnucash binaries.
-let private queryPaths () =
-    if isNull gnucashInstallationPath then
-        raise (FileNotFoundException("Unable to locate gnucash, you have to specify the path instead."))
-
-    let cli = Path.Join(gnucashInstallationPath, "bin", Executables.CLI)
-
+let private runtimeEnvironmentIntrospect cli =
     let procInfo =
         ProcessStartInfo(
-            FileName = cli,
+            FileName = defaultUncheckedArg Executables.CLI cli,
             Arguments = "--paths",
-            WorkingDirectory = Path.GetDirectoryName cli,
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true
@@ -64,7 +38,7 @@ let private queryPaths () =
     proc.WaitForExit()
 
     if String.IsNullOrWhiteSpace output then
-        failwithf "\"%s --paths\" produced empty result, make sure the installed gnucash is at least 4.12" cli
+        failwithf "\"gnucash-cli --paths\" produced empty result, make sure the installed gnucash is at least 4.12"
 
     let mutable libPathO = None
     let mutable binPathO = None
@@ -78,15 +52,19 @@ let private queryPaths () =
     match (libPathO, binPathO) with
     | Some libPath, Some binPath ->
         if OperatingSystem.IsWindows() then
-            (libPath, binPath)
+            { BinaryPath = binPath
+              LibraryPath = libPath }
         else
-            (Path.GetDirectoryName libPath, binPath)
-    | _ -> failwithf "Unable to obtain path info from \"%s --paths\":\n%s" cli output
+            { BinaryPath = binPath
+              LibraryPath = Path.GetDirectoryName libPath }
+    | _ -> failwithf "Unable to obtain path info from \"gnucash-cli --paths\":\n%s" output
 
 /// Activates the library loader for gnucash native libraries.
 [<CompiledName "Activate">]
-let activate () =
-    let libPath, binPath = queryPaths ()
+let activate (cli: string) =
+    let { LibraryPath = libPath
+          BinaryPath = binPath } =
+        runtimeEnvironmentIntrospect cli
 
     let resolver =
         let resolved = Dictionary<string, nativeint>()

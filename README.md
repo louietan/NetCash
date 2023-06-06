@@ -33,13 +33,12 @@ and open the generated book with GnuCash to see if it actually works.*
 using NetCash;
 using NetCash.Helpers;
 
-// Sets gnucash installation path if it's a non-standard one.
-// For example:
-// LibraryLoader.GnuCashInstallationPath = "/opt/gnucash-unstable";
-// LibraryLoader.GnuCashInstallationPath = @"D:\Program Files (x86)\gnucash";
-
 // Initializes the engine.
 GnuCashEngine.Initialize();
+
+// Use the following overload if gnucash-cli is not available from PATH.
+GnuCashEngine.Initialize("/opt/gnucash-unstable/bin/gnucash-cli");
+GnuCashEngine.Initialize(@"X:\Program Files (x86)\gnucash\bin\gnucash-cli.exe");
 
 var uri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml,
                          path: Path.Join(Directory.GetCurrentDirectory(), "netcash-demo.gnucash"));

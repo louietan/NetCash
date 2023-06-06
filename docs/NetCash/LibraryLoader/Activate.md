@@ -3,7 +3,7 @@
 Activates the library loader for gnucash native libraries.
 
 ```csharp
-public static void Activate()
+public static void Activate(string cli)
 ```
 
 ## See Also

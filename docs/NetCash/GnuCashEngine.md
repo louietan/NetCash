@@ -8,8 +8,9 @@ public static class GnuCashEngine
 
 | name | description |
 | --- | --- |
+| [GnuCashEngine](GnuCashEngine/GnuCashEngine.md)() | The default constructor. |
 | static [Version](GnuCashEngine/Version.md) { get; } |  |
-| static [Initialize](GnuCashEngine/Initialize.md)() | Initializes the GnuCash engine. This requires only once. |
+| static [Initialize](GnuCashEngine/Initialize.md)(…) | Initializes the GnuCash engine. This requires only once. |
 | static [SetLogLevel](GnuCashEngine/SetLogLevel.md)(…) |  |
 | static [SetLogOutput](GnuCashEngine/SetLogOutput.md)(…) | Sets the log file to write to. |
 | static [Shutdown](GnuCashEngine/Shutdown.md)() |  |
