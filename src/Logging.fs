@@ -15,7 +15,7 @@ type LogLevel =
 
 module Appender =
     type Protocol =
-        abstract Append: string -> Task
+        abstract Append: string -> unit
 
     /// Creates a file appender.
     [<CompiledName "OfFile">]
@@ -24,13 +24,13 @@ module Appender =
         File.WriteAllText(file, String.Empty)
 
         { new Protocol with
-            member _.Append(msg) = File.AppendAllLinesAsync(file, [ msg ]) }
+            member _.Append(msg) = File.AppendAllLines(file, [ msg ]) }
 
     /// Gets the console appender.
     [<CompiledName "Console">]
     let console =
         { new Protocol with
-            member _.Append(msg) = stdout.WriteLineAsync msg }
+            member _.Append(msg) = stdout.WriteLine msg }
 
 let mutable private currentLevel = LogLevel.OFF
 
@@ -40,29 +40,19 @@ module Logger =
     let private simpleLayout (level, message) =
         sprintf "%s|%A|%s" (DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff")) level message
 
-    let private processor =
-        MailboxProcessor<string>.Start
-            (fun inbox ->
-                let rec loop () =
-                    async {
-                        let! msg = inbox.Receive()
-
-                        do!
-                            currentAppenders
-                            |> Seq.map (fun appender -> appender.Append msg)
-                            |> Task.WhenAll
-                            |> Async.AwaitTask
-
-                        return! loop ()
-                    }
-
-                loop ())
+    let private writeLog msg =
+        for a in currentAppenders do
+            a.Append msg
 
     let private LogInternal level message =
         if level >= currentLevel then
-            (level, message) |> simpleLayout |> processor.Post
+            (level, message) |> simpleLayout |> writeLog
 
     let internal log level = Printf.ksprintf (LogInternal level)
+    let internal debug (format: Printf.StringFormat<'a, unit>) = log LogLevel.DEBUG format
+    let internal info (format: Printf.StringFormat<'a, unit>) = log LogLevel.INFO format
+    let internal warn (format: Printf.StringFormat<'a, unit>) = log LogLevel.WARN format
+    let internal error (format: Printf.StringFormat<'a, unit>) = log LogLevel.ERROR format
 
     let Log (level, format, [<ParamArray>] args: obj []) =
         LogInternal level (String.Format(format, args))
