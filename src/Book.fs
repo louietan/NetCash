@@ -38,9 +38,7 @@ module private Session =
 
         if creating then
             Bindings.gnc_account_create_root book |> ignore
-
-        // New XML file can't be loaded, see comments in gnucash_core.py `class Session`.
-        if not (creating && uri.Scheme = GnuCashUri.UriSchemeXml) then
+        else
             Bindings.xaccLogDisable ()
             Bindings.qof_session_load (session, IntPtr.Zero)
             Bindings.xaccLogEnable ()
