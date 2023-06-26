@@ -105,7 +105,7 @@ public class AccountFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade= "simple")]
     public void Can_Move_Splits(TestingBook testingBook)
     {
         GncNumeric checkingBalance;

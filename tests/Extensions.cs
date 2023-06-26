@@ -2,7 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
     using Xunit;
 
     public static class NetCashExtensions
@@ -21,6 +24,27 @@
                 .ToArray();
 
         public static TransactionEditor WithTestingCurrency(this TransactionEditor self) => self.SetCurrency(TestingCurrency);
+    }
+
+    public static class PathExtensions
+    {
+        public static string GetBaseFileName(string path)
+        {
+            var fileName = Path.GetFileName(path);
+            var firstPerid = fileName.IndexOf('.');
+            return firstPerid < 0
+                ? fileName
+                : fileName.Substring(0, firstPerid);
+        }
+    }
+
+    public static class SystemExtensions
+    {
+        public static string SHA1Sum(this string self)
+        {
+            using var sha1 = SHA1.Create();
+            return Convert.ToHexString(sha1.ComputeHash(Encoding.UTF8.GetBytes(self)));
+        }
     }
 
     public static class Enumerables

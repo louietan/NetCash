@@ -14,7 +14,7 @@ using Xunit.Abstractions;
 public class TransactionFixture
 {
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Can_Transfer(TestingBook testingBook)
     {
         var incomeBalance = 0d;
@@ -45,7 +45,7 @@ public class TransactionFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Can_Reverse_Transactions(TestingBook testingBook)
     {
         using (var book = Book.Open(testingBook))
@@ -66,7 +66,7 @@ public class TransactionFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Can_Create_Transactions_With_Multiple_Splits(TestingBook testingBook)
     {
         var openingBalance = 0d;
@@ -129,7 +129,7 @@ public class TransactionFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Can_Transfer_Between_Different_Currencies(TestingBook testingBook)
     {
         var cashBalance = 0d;
@@ -167,7 +167,7 @@ public class TransactionFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "investment", Copy = true)]
+    [SetupTestingBook(CopyPremade = "investment")]
     public void Can_Create_Transactions_With_Realized_Gains(TestingBook testingBook)
     {
         var startingBankBalance = 0d;
@@ -264,7 +264,7 @@ public class TransactionFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Should_Create_Imbalance_Accounts(TestingBook testingBook)
     {
         using (var book = Book.Open(testingBook))
@@ -292,7 +292,7 @@ public class TransactionFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Should_Create_Balancing_Split(TestingBook testingBook)
     {
         using (var book = Book.Open(testingBook))

@@ -13,51 +13,41 @@ using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-public record TestingBook(GnuCashUri Uri)
-{
-    public GnuCashUri BaseBookUri { get; set; }
-
-    public static implicit operator GnuCashUri(TestingBook testBook) => testBook.Uri;
-}
-
 /// <summary>
 /// Provides URIs for pre-made books or automaticaly generate unique URIs for each testcase.
 /// </summary>
 public class SetupTestingBookAttribute : DataAttribute
 {
-    static readonly string RootPath = Path.Join(Directory.GetCurrentDirectory(), "Books");
+    /// <summary>
+    /// Copy from a premade book. Mutually-exclusive with UsePremade.
+    /// </summary>
+    public string CopyPremade { get; init; }
 
-    public string BookName { get; init; }
-
-    public bool Copy { get; init; }
-
-    GnuCashUri MakeUri(string scheme, string bookName)
-    {
-        if (Bindings.gnc_uri_is_file_scheme(scheme))
-        {
-            var path = Path.Join(RootPath, $"{bookName}.{scheme}.gnucash");
-            return new GnuCashUri(scheme: scheme, path: path);
-        }
-        else
-        {
-            return new GnuCashUri(String.Join(Uri.SchemeDelimiter, scheme, bookName));
-        }
-    }
+    /// <summary>
+    /// Use a premade book (as readonly). Mutually-exclusive with UsePremade.
+    /// </summary>
+    public string UsePremade { get; init; }
 
     protected virtual IEnumerable<object[]> GetAdditionalData(MethodInfo testMethod) => Enumerable.Empty<object[]>();
 
     public override IEnumerable<object[]> GetData(MethodInfo testMethod)
     {
-        var autoBookName = $"{testMethod.DeclaringType.Name}~{testMethod.Name}~{Guid.NewGuid().ToString("n").Substring(0, 8)}";
-        var bookName = this.Copy ? autoBookName : this.BookName ?? autoBookName;
+        // Appended with a GUID because a single test method could be attributed with multiple InlineData or MemberData.
+        var autoBookName = $"{testMethod.DeclaringType.Name}~{testMethod.Name}~{Guid.NewGuid().ToString("n").Substring(0, 8)}"; 
+        var bookName = UsePremade ?? autoBookName;
 
         object[] makeDataRow(string scheme)
         {
-            var testingBook = new TestingBook(MakeUri(scheme, bookName));
+            var testingBook = new TestingBook(TestingBook.MakeUri(scheme, bookName));
 
-            if (this.Copy)
+            if (UsePremade == null)
             {
-                testingBook.BaseBookUri = this.MakeUri(scheme, this.BookName);
+                DbHelper.EnsureDatabase(scheme, testingBook.Uri.Path);
+            }
+
+            if (this.CopyPremade != null)
+            {
+                testingBook.BaseBookUri = TestingBook.MakeUri(scheme, this.CopyPremade);
 
                 // Due to this side-effect, we have to turn off "preEnumerateTheories" in xunit.runner.json to prevent repeated generation of test data.
                 using var _ = Book.OpenRead(testingBook.BaseBookUri).SaveAs(testingBook.Uri);

@@ -8,7 +8,7 @@ using Xunit;
 public class LotFixture
 {
     [Theory]
-    [SetupTestingBook(BookName = "investment", Copy = true)]
+    [SetupTestingBook(CopyPremade = "investment")]
     public void Can_Scrub_Accounts(TestingBook testingBook)
     {
         var journal = new TradingJournal(@"

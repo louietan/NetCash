@@ -14,7 +14,7 @@ using Xunit.Abstractions;
 public class BookFixture
 {
     [Theory]
-    [SetupTestingBook(BookName = "simple")]
+    [SetupTestingBook(UsePremade = "simple")]
     public void Can_Read_A_Simple_Book(TestingBook testingBook)
     {
         using var book = Book.OpenRead(testingBook);
@@ -51,8 +51,8 @@ public class BookFixture
     }
 
     [Theory]
-    [SetupTestingBookWithInlineData("Assets", true, BookName = "simple")]
-    [SetupTestingBookWithInlineData("Spaceship", false, BookName = "simple")]
+    [SetupTestingBookWithInlineData("Assets", true, UsePremade = "simple")]
+    [SetupTestingBookWithInlineData("Spaceship", false, UsePremade = "simple")]
     public void Can_Find_Accounts(string accountName, bool exists, TestingBook testingBook)
     {
         using var book = Book.OpenRead(testingBook);
@@ -93,7 +93,7 @@ public class BookFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Can_Delete_Accounts(TestingBook testingBook)
     {
         using (var book = Book.Open(testingBook))
@@ -112,7 +112,7 @@ public class BookFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Should_Return_The_Original_Book_If_Save_As_The_SameUri(TestingBook testingBook)
     {
         using var book = Book.Open(testingBook);

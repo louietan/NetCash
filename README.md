@@ -5,9 +5,8 @@ NetCash is a .NET wrapper for the [native C API](https://wiki.gnucash.org/wiki/U
 **Status**
 
 - It is usable right now, but is a WIP and is far from stable. There might be bugs and the interface is going to change.
-- It was developed against GnuCash 4.12 and works with 5.1 at the time of writing.
-- It has been tested on Linux and Windows. MacOS probably works too.
-- XML and SQLite backends have been tested, MySQL and PostgreSQL should "just work" (probably).
+- It was initially developed against GnuCash 4.12 and works with 5.3 at the time of writing.
+- It has been tested on Linux and Windows. macOS probably works too.
 
 ## Getting started
 

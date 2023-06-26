@@ -11,7 +11,7 @@ using Xunit;
 public class PriceFixture
 {
     [Theory]
-    [SetupTestingBook(BookName = "investment", Copy = true)]
+    [SetupTestingBook(CopyPremade = "investment")]
     public void Can_Update_PriceDB(TestingBook testingBook)
     {
         var prices = new[] { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5 };

@@ -2,6 +2,8 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 internal class Bootstrap
@@ -20,5 +22,27 @@ internal class Bootstrap
 
         Bindings.gnc_prefs_set_file_save_compressed(false);
         Bindings.gnc_prefs_set_file_retention_policy(Bindings.XMLFileRetentionType.XML_RETAIN_NONE);
+    }
+
+    /// <summary>
+    /// Replicate premade books to different schemes to be tested.
+    /// </summary>
+    [ModuleInitializer]
+    internal static void ReplicatePremadeBooks()
+    {
+        var premadeScheme = GnuCashUri.UriSchemeXml;
+        var schemesToReplicate = Config.SupportedBackends.Where(b => b != premadeScheme);
+
+        foreach (var file in Directory.GetFiles(TestingBook.RootPath))
+        {
+            var premadeUri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml, path: file);
+            foreach (var scheme in schemesToReplicate)
+            {
+                var bookName = PathExtensions.GetBaseFileName(file);
+                var uri = TestingBook.MakeUri(scheme, bookName);
+                DbHelper.EnsureDatabase(scheme, uri.Path);
+                using var _ = Book.OpenRead(premadeUri).SaveAs(uri);
+            }
+        }
     }
 }

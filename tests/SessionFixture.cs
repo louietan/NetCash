@@ -8,15 +8,19 @@ using Xunit;
 public class SessionFixture
 {
     [Theory]
-    [SetupTestingBook]
-    public void Should_Return_Error_If_Book_Does_Not_Exist(TestingBook testingBook)
+    [SetupTestingBook(UsePremade = "no-such-book")]
+    public void Should_Throw_If_Book_Does_Not_Exist(TestingBook testingBook)
     {
         var exception = Assert.Throws<GnuCashBackendException>(() => Book.OpenRead(testingBook));
-        Assert.BackendErrorCode(Bindings.QofBackendError.ERR_FILEIO_FILE_NOT_FOUND, exception);
+        Assert.BackendErrorCode(
+            Bindings.gnc_uri_is_file_scheme(testingBook.Uri.Scheme)
+                ? Bindings.QofBackendError.ERR_FILEIO_FILE_NOT_FOUND
+                : Bindings.QofBackendError.ERR_BACKEND_NO_SUCH_DB,
+            exception);
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Should_Lock_And_Unlock_Properly(TestingBook testingBook)
     {
         Book openBook() => Book.Open(testingBook);
@@ -30,7 +34,7 @@ public class SessionFixture
     }
 
     [Theory]
-    [SetupTestingBook(BookName = "simple")]
+    [SetupTestingBook(UsePremade = "simple")]
     public void Can_Get_Currently_Opened_Book(TestingBook testingBook)
     {
         Book openBook() => Book.OpenRead(testingBook);

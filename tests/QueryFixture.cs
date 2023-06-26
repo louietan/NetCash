@@ -5,7 +5,7 @@ using Xunit;
 public class QueryFixture
 {
     [Theory]
-    [SetupTestingBook(BookName = "common", Copy = true)]
+    [SetupTestingBook(CopyPremade = "common")]
     public void Query_Should_Work(TestingBook testingBook)
     {
         using (var book = Book.Open(testingBook))

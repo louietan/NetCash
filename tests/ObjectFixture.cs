@@ -8,7 +8,7 @@ using Xunit;
 public class ObjectFixture
 {
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void Should_Maintain_Mapping_Between_Managed_And_Native_Objects(TestingBook testingBook)
     {
         using (var book = Book.Open(testingBook))

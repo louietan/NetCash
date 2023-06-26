@@ -14,7 +14,7 @@ using Xunit.Abstractions;
 public class CommodityFixture
 {
     [Theory]
-    [SetupTestingBook(BookName = "simple", Copy = true)]
+    [SetupTestingBook(CopyPremade = "simple")]
     public void TERRIBLY_WRITTEN_TESTCASE_FOR_COMMODITYTABLE(TestingBook testingBook)
     {
         using (var book = Book.Open(testingBook))
@@ -72,8 +72,8 @@ public class CommodityFixture
     }
 
     [Theory]
-    [SetupTestingBookWithInlineData(ISOCurrencyCodes.XTS, true, "Code for testing purposes", BookName = "simple")]
-    [SetupTestingBookWithInlineData("LOL", false, null, BookName = "simple")]
+    [SetupTestingBookWithInlineData(ISOCurrencyCodes.XTS, true, "Code for testing purposes", UsePremade = "simple")]
+    [SetupTestingBookWithInlineData("LOL", false, null, UsePremade = "simple")]
     public void Can_Find_Currencies(string currencyCode, bool exists, string currencyFullName, TestingBook testingBook)
     {
         using var book = Book.OpenRead(testingBook);
