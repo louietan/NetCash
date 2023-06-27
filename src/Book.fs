@@ -322,13 +322,22 @@ type Book private (session: nativeint) as self =
     /// <returns>A new book or current book when uri is the same.</returns>
     /// <remarks>WARNING: current book closes after being saved to a different uri, so never use the original book after this operation.</remarks>
     /// <exception cref="GnuCashBackendException">Throws when an error occured while saving the book.</exception>
-    member self.SaveAs(uri: GnuCashUri) =
+    member self.SaveAs(uri: GnuCashUri, [<Optional; DefaultParameterValue false>] overwrite: bool) =
         if uri.Equals self.URI then
             self.Save()
             self
         else
             let newSession = Bindings.qof_session_new IntPtr.Zero
-            Bindings.qof_session_begin (newSession, string uri, Bindings.SessionOpenMode.SESSION_NEW_STORE)
+
+            Bindings.qof_session_begin (
+                newSession,
+                string uri,
+                (if overwrite then
+                     Bindings.SessionOpenMode.SESSION_NEW_OVERWRITE
+                 else
+                     Bindings.SessionOpenMode.SESSION_NEW_STORE)
+            )
+
             Session.raiseBackendErrorMaybe newSession
 
             Bindings.qof_event_suspend ()
