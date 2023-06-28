@@ -7,6 +7,7 @@ open System.Runtime.InteropServices
 
 open NetCash.Marshalling
 
+
 module private Session =
     let raiseBackendErrorMaybe sess =
         let code = Bindings.qof_session_get_error sess
@@ -22,14 +23,16 @@ module private Session =
            <> Bindings.QofBackendError.ERR_BACKEND_NO_ERR then
             raise (GnuCashBackendException(code, message))
 
-    // We don't use the static current session, but some functions
-    // in gnucash does, such as `gnc_default_currency`.
-    // If we don't maintain this variable, it might leak.
-    let replaceCurrent = Bindings.gnc_set_current_session
-
     let start (uri: GnuCashUri) (mode: Bindings.SessionOpenMode) =
+        if Bindings.gnc_current_session_exist () then
+            invalidOp
+                "There's already a book opened, NetCash (and GnuCash) doesn't support opening multiple books at the same time."
+
         let book = Bindings.qof_book_new ()
+        Bindings.qof_event_suspend ()
         let session = Bindings.qof_session_new book
+        Bindings.qof_event_resume ()
+
         Bindings.qof_session_begin (session, string uri, mode)
 
         let creating =
@@ -45,62 +48,24 @@ module private Session =
 
         raiseBackendErrorMaybe session
 
-        replaceCurrent session
-
         session
 
-module private BookStack =
-    let books = Stack<Book>()
+module private CurrentBook =
+    let private curr = ref Unchecked.defaultof<Book>
 
-    let tryPeek = books.TryPeek
+    let get () = curr.Value
 
-    let push (book: Book) =
-        books.Push book
-        Bindings.gnc_hook_run (Bindings.HOOK_BOOK_OPENED, book.SessionHandle)
+    let init sess =
+        Bindings.gnc_set_current_session sess
+        curr.Value <- new Book(sess)
+        get ()
 
-    let drop () =
-        let book = books.Pop()
-
-        match tryPeek () with
-        | false, _ -> Session.replaceCurrent IntPtr.Zero
-        | _, book -> Session.replaceCurrent book.SessionHandle
-
-        Bindings.gnc_hook_run (Bindings.HOOK_BOOK_CLOSED, book.SessionHandle)
-
-type AccountFinder =
-    | ByGuid of Guid
-    | ByName of string
-    | ByFullName of string []
-    | ByCode of string
-
-    member self.Find(book) =
-        match self with
-        | ByName name -> Bindings.gnc_account_lookup_by_name (Bindings.gnc_book_get_root_account (book), name)
-        | ByGuid guid ->
-            guid
-            |> Guid.toSafeHandle
-            |> SafeHandle.using (fun ptr -> Bindings.xaccAccountLookup (ptr, book))
-        | ByCode code -> Bindings.gnc_account_lookup_by_code (Bindings.gnc_book_get_root_account (book), code)
-        | ByFullName names ->
-            let rec findByFullName (parent: Account) (childName: string []) =
-                if childName.Length = 0 then
-                    Unchecked.defaultof<_>
-                else
-                    match parent.Children
-                          |> Seq.tryFind (fun acc -> acc.Name = childName[0])
-                        with
-                    | Some child ->
-                        if childName.Length = 1 then
-                            GnuCashObject.nativeHandle child
-                        else
-                            findByFullName child (childName[1..])
-                    | None -> Unchecked.defaultof<_>
-
-            findByFullName
-                (book
-                 |> Bindings.gnc_book_get_root_account
-                 |> GnuCashObject.Registry.getOrCreate<Account>)
-                names
+    let close () =
+        let sess = curr.Value.SessionHandle
+        Bindings.gnc_hook_run (Bindings.HOOK_BOOK_CLOSED, sess)
+        curr.Value <- Unchecked.defaultof<_>
+        Bindings.qof_session_end sess
+        Bindings.gnc_clear_current_session ()
 
 /// A book is the container for data stored in a gnucash database.
 /// In the design of gnucash, Session and Book are two separate abstractions.
@@ -108,15 +73,15 @@ type AccountFinder =
 /// Book represents the container for domain objects, like Accounts, Transactions, Splits etc.
 /// For simplicity, NetCash combined the two concepts into one and just called it Book.
 /// Additionally, Book also serves as the "Factory" to create some accounting objects, like Accounts and Transactions.
-type Book private (session: nativeint) as self =
+///
+/// Opening multiple books at the same time is not supported and doing so will cause an exception to be thrown.
+type Book internal (session: nativeint) =
     let handle = Bindings.qof_session_get_book session
 
     let commodities =
         lazy CommodityTable(handle, Bindings.gnc_commodity_table_get_table handle)
 
     let mutable closed = false
-
-    do BookStack.push self
 
     interface INativeWrapper with
         member _.NativeHandle = handle
@@ -132,53 +97,38 @@ type Book private (session: nativeint) as self =
     /// with the same name created by previous session, and it's going to fail with ERR_FILEIO_BACKUP_ERROR,
     /// because the backup file is created using the combination of O_CREAT and O_EXCL, which disallows overwriting an existing file.
     /// </para>
-    /// <para>
-    /// There is a quick fix that I don't recommend, which is to call `Bindings.gnc_prefs_set_file_retention_policy(Bindings.XMLFileRetentionType.XML_RETAIN_NONE)`
-    /// (it only updates the in-memory value without touching the preference database). I have to warn you
-    /// that this is not to disable the backup, it is to tell the backend to delete all the backup and log files of the book when finishes saving!!!
-    /// which might not be what you want!
-    /// </para>
     /// </remarks>
     static member Open(uri: GnuCashUri, [<Optional; DefaultParameterValue false>] ignoreLock: bool) =
-        new Book(
-            Session.start
-                uri
-                (if ignoreLock then
-                     Bindings.SessionOpenMode.SESSION_BREAK_LOCK
-                 else
-                     Bindings.SessionOpenMode.SESSION_NORMAL_OPEN)
-        )
+        Session.start
+            uri
+            (if ignoreLock then
+                 Bindings.SessionOpenMode.SESSION_BREAK_LOCK
+             else
+                 Bindings.SessionOpenMode.SESSION_NORMAL_OPEN)
+        |> CurrentBook.init
 
     /// <summary>Openes an existing book for read-only.</summary>
     /// <param name="uri">URI to the book.</param>
     /// <exception cref="GnuCashBackendException">Throws when an error occured while opening the book.</exception>
     static member OpenRead(uri: GnuCashUri) =
-        new Book(Session.start uri Bindings.SessionOpenMode.SESSION_READ_ONLY)
+        Session.start uri Bindings.SessionOpenMode.SESSION_READ_ONLY
+        |> CurrentBook.init
 
     /// <summary>Creates and opens a book.</summary>
     /// <param name="uri">URI to the book.</param>
     /// <param name="overwrite">true to overwrite the existing book.</param>
     /// <exception cref="GnuCashBackendException">Throws when an error occured while opening the book.</exception>
     static member Create(uri: GnuCashUri, [<Optional; DefaultParameterValue false>] overwrite: bool) =
-        new Book(
-            Session.start
-                uri
-                (if overwrite then
-                     Bindings.SessionOpenMode.SESSION_NEW_OVERWRITE
-                 else
-                     Bindings.SessionOpenMode.SESSION_NEW_STORE)
-        )
+        Session.start
+            uri
+            (if overwrite then
+                 Bindings.SessionOpenMode.SESSION_NEW_OVERWRITE
+             else
+                 Bindings.SessionOpenMode.SESSION_NEW_STORE)
+        |> CurrentBook.init
 
     /// <summary>Gets the currently opened book. Returns null when there's no book currently opened.</summary>
-    /// <remarks>
-    /// All the opened books are recorded on a stack. This property actually returns the top book from the stack.
-    /// The stack pops when the top book gets disposed, you have to make sure every book is disposed timely and in proper order,
-    /// otherwise it's going to be messed up :-/
-    /// </remarks>
-    static member Current =
-        match BookStack.tryPeek () with
-        | false, _ -> Unchecked.defaultof<_>
-        | _, book -> book
+    static member Current = CurrentBook.get ()
 
     /// Gets the native pointer to session.
     member _.SessionHandle = session
@@ -353,9 +303,8 @@ type Book private (session: nativeint) as self =
             Session.raiseBackendErrorMaybe newSession
 
             self.Close()
-            Session.replaceCurrent newSession
 
-            new Book(newSession)
+            CurrentBook.init newSession
 
     /// Gets the file path for this book if it's a file-based backend.
     member self.FilePath =
@@ -385,15 +334,45 @@ type Book private (session: nativeint) as self =
     member self.Close() =
         if not closed then
             self.Save()
-            BookStack.drop ()
-            Bindings.qof_session_end session
-            // Destroying a session also destroys it's associated
-            // book, which subsequently destroys all objects
-            // inside the book.
-            Bindings.qof_session_destroy session
+            CurrentBook.close ()
             closed <- true
 
     override self.Finalize() = self.Close()
 
     interface IDisposable with
         member self.Dispose() = self.Close()
+
+type internal AccountFinder =
+    | ByGuid of Guid
+    | ByName of string
+    | ByFullName of string []
+    | ByCode of string
+
+    member self.Find(book) =
+        match self with
+        | ByName name -> Bindings.gnc_account_lookup_by_name (Bindings.gnc_book_get_root_account (book), name)
+        | ByGuid guid ->
+            guid
+            |> Guid.toSafeHandle
+            |> SafeHandle.using (fun ptr -> Bindings.xaccAccountLookup (ptr, book))
+        | ByCode code -> Bindings.gnc_account_lookup_by_code (Bindings.gnc_book_get_root_account (book), code)
+        | ByFullName names ->
+            let rec findByFullName (parent: Account) (childName: string []) =
+                if childName.Length = 0 then
+                    Unchecked.defaultof<_>
+                else
+                    match parent.Children
+                          |> Seq.tryFind (fun acc -> acc.Name = childName[0])
+                        with
+                    | Some child ->
+                        if childName.Length = 1 then
+                            GnuCashObject.nativeHandle child
+                        else
+                            findByFullName child (childName[1..])
+                    | None -> Unchecked.defaultof<_>
+
+            findByFullName
+                (book
+                 |> Bindings.gnc_book_get_root_account
+                 |> GnuCashObject.Registry.getOrCreate<Account>)
+                names

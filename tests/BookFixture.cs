@@ -118,4 +118,35 @@ public class BookFixture
         using var book = Book.Open(testingBook);
         Assert.Same(book, book.SaveAs(testingBook));
     }
+
+    [Theory]
+    [SetupTestingBook(UsePremade = "no-such-book")]
+    public void Should_Throw_If_Book_Does_Not_Exist(TestingBook testingBook)
+    {
+        var exception = Assert.Throws<GnuCashBackendException>(() => Book.OpenRead(testingBook));
+        Assert.BackendErrorCode(
+            Bindings.gnc_uri_is_file_scheme(testingBook.Uri.Scheme)
+                ? Bindings.QofBackendError.ERR_FILEIO_FILE_NOT_FOUND
+                : Bindings.QofBackendError.ERR_BACKEND_NO_SUCH_DB,
+            exception);
+    }
+
+    [Theory]
+    [SetupTestingBookWithInlineData(3, UsePremade = "simple")]
+    public void Can_Get_Currently_Opened_Book(int times, TestingBook testingBook)
+    {
+        Book openBook() => Book.OpenRead(testingBook);
+
+        for (var i = 0; i < times; ++i)
+        {
+            Assert.Null(Book.Current);
+            Assert.False(Bindings.gnc_current_session_exist());
+
+            using var book = openBook();
+
+            Assert.Equal(book, Book.Current);
+            Assert.Equal(Bindings.gnc_get_current_session(), book.SessionHandle);
+            Assert.Throws<InvalidOperationException>(openBook);
+        }
+    }
 }
