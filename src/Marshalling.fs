@@ -52,12 +52,12 @@ module Guid =
         >> Guid
 
     let toSafeHandle guid =
-        let guid = SafeHandle.alloc sizeof<Bindings.GncGUID>
+        let handle = SafeHandle.alloc sizeof<Bindings.GncGUID>
 
-        Bindings.string_to_guid (guid.ToString(), guid.DangerousGetHandle())
+        Bindings.string_to_guid (guid.ToString(), handle.DangerousGetHandle())
         |> ignore
 
-        guid
+        handle
 
 module Object =
     let fromPointer ctor =
