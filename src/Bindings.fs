@@ -28,7 +28,7 @@ type GCompareFunc = delegate of  gpointer * gpointer -> gint
 [<UnmanagedFunctionPointer(CallingConvention.Cdecl)>]
 type GDestroyNotify = delegate of gpointer -> unit
 
-[<DllImport(NativeLibraries.gio)>]
+[<DllImport(NativeLibraries.glib)>]
 extern nativeint g_strdup (nativeint str)
 
 [<DllImport(NativeLibraries.glib)>]
