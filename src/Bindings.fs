@@ -816,6 +816,9 @@ type XMLFileRetentionType =
 // -----------------------------------------------------------------------------
 // libgnucash/engine/gnc-uri-utils.h
 
+[<DllImport(NativeLibraries.gncEngine); return: MarshalAs(UnmanagedType.I1)>]
+extern bool gnc_uri_is_uri([<MarshalAs(UnmanagedType.LPUTF8Str)>]string uri)
+
 [<DllImport(NativeLibraries.gncEngine)>]
 extern void gnc_uri_get_components ([<MarshalAs(UnmanagedType.LPUTF8Str)>] string uri,
                                     nativeint& scheme,
@@ -841,6 +844,9 @@ extern bool gnc_uri_targets_local_fs ([<MarshalAs(UnmanagedType.LPUTF8Str)>] str
 
 [<DllImport(NativeLibraries.gncEngine); return: MarshalAs(UnmanagedType.I1)>]
 extern bool gnc_uri_is_file_scheme ([<MarshalAs(UnmanagedType.LPUTF8Str)>] string scheme)
+
+[<DllImport(NativeLibraries.gncEngine); return: MarshalAs(UnmanagedType.I1)>]
+extern bool gnc_uri_is_known_scheme ([<MarshalAs(UnmanagedType.LPUTF8Str)>] string scheme)
 
 [<DllImport(NativeLibraries.gncEngine)>]
 extern nativeint gnc_uri_get_path ([<MarshalAs(UnmanagedType.LPUTF8Str)>] string uri)

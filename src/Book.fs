@@ -317,7 +317,7 @@ type Book internal (session: nativeint) =
         session
         |> Bindings.qof_session_get_url
         |> String.fromBorrowed
-        |> GnuCashUri
+        |> GnuCashUri.Parse
 
     /// <summary>Creates a new account at top-level with default currency.</summary>
     member self.NewAccount(name, accountType) =

@@ -31,12 +31,12 @@ internal class Bootstrap
     [ModuleInitializer]
     internal static void ReplicatePremadeBooks()
     {
-        var premadeScheme = GnuCashUri.UriSchemeXml;
+        var premadeScheme = GnuCashUri.SchemeXml;
         var schemesToReplicate = Config.SupportedBackends.Where(b => b != premadeScheme);
 
         foreach (var file in Directory.GetFiles(TestingBook.RootPath))
         {
-            var premadeUri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml, path: file);
+            var premadeUri = new GnuCashUri(GnuCashUri.SchemeXml, null, 0, null, null, file);
             foreach (var scheme in schemesToReplicate)
             {
                 var bookName = PathExtensions.GetBaseFileName(file);

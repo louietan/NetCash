@@ -10,10 +10,10 @@ public static class Config
     /// This controls which store backends to test.
     /// </summary>
     public static readonly IEnumerable<string> SupportedBackends = new string[] {
-        GnuCashUri.UriSchemeXml,
-        GnuCashUri.UriSchemeSqlite,
-        // GnuCashUri.UriSchemeMySQL,
-        // GnuCashUri.UriSchemePostgreSQL,
+        GnuCashUri.SchemeXml,
+        GnuCashUri.SchemeSqlite,
+        // GnuCashUri.SchemeMySQL,
+        // GnuCashUri.SchemePostgreSQL,
     };
 
     public const int MAX_DATABASE_NAME_LENGTH = 63;  // MySQL is 64, PostgreSQL is 63.

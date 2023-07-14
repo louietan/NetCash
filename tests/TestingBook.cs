@@ -16,7 +16,7 @@ public record TestingBook(GnuCashUri Uri)
         if (Bindings.gnc_uri_is_file_scheme(scheme))
         {
             var path = Path.Join(RootPath, $"{bookName}.{scheme}.gnucash");
-            return new GnuCashUri(scheme: scheme, path: path);
+            return new GnuCashUri(scheme, null, 0, null, null, path);
         }
         else
         {
@@ -36,7 +36,7 @@ public record TestingBook(GnuCashUri Uri)
             // > C interface is case-sensitive. This results in a mixed-case dbname
             // > being created (with a lower case name) but then dbi can't connect to
             // > it. To work around this, coerce the name to lowercase first. 
-            if (scheme == GnuCashUri.UriSchemePostgreSQL)
+            if (scheme == GnuCashUri.SchemePostgreSQL)
                 databaseName = databaseName.ToLower();
 
             var databaseConfig = DbHelper.GetConfig(scheme);
@@ -44,7 +44,7 @@ public record TestingBook(GnuCashUri Uri)
             return new GnuCashUri(scheme: scheme,
                                   host: databaseConfig.Host,
                                   port: databaseConfig.Port,
-                                  userName: databaseConfig.UserName,
+                                  username: databaseConfig.UserName,
                                   password: databaseConfig.Password,
                                   path: databaseName);
         }

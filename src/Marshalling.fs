@@ -45,6 +45,12 @@ module String =
         finally
             Bindings.g_free ptr
 
+    let inline internal maybeBorrowed ptr =
+        Some ptr |> Option.filter ((<>) IntPtr.Zero) |> Option.map fromBorrowed
+
+    let inline internal maybeOwned ptr =
+        Some ptr |> Option.filter ((<>) IntPtr.Zero) |> Option.map fromOwned
+
 module Guid =
     let fromPointer =
         Bindings.guid_to_string

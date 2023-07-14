@@ -7,8 +7,8 @@ public static class DbHelper
     public static DatabaseConfig GetConfig(string scheme) =>
             scheme switch
             {
-                string s when s == GnuCashUri.UriSchemeMySQL => Config.MySQL,
-                string s when s == GnuCashUri.UriSchemePostgreSQL => Config.PostgreSQL,
+                string s when s == GnuCashUri.SchemeMySQL => Config.MySQL,
+                string s when s == GnuCashUri.SchemePostgreSQL => Config.PostgreSQL,
                 _ => throw new Exception($"Unsupported database scheme: {scheme}")
             };
 
@@ -21,7 +21,7 @@ public static class DbHelper
 
         var connString = $"Server={config.Host},{config.Port};User ID={config.UserName};Password={config.Password}";
 
-        if (scheme == GnuCashUri.UriSchemeMySQL)
+        if (scheme == GnuCashUri.SchemeMySQL)
         {
             using var conn = new MySqlConnector.MySqlConnection(connString);
             conn.Open();
@@ -29,7 +29,7 @@ public static class DbHelper
             cmd.CommandText = @$"DROP DATABASE IF EXISTS `{dbName}`; CREATE DATABASE `{dbName}`;";
             cmd.ExecuteNonQuery();
         }
-        else if (scheme == GnuCashUri.UriSchemePostgreSQL)
+        else if (scheme == GnuCashUri.SchemePostgreSQL)
         {
             using var conn = new Npgsql.NpgsqlConnection(connString);
             conn.Open();

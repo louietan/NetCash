@@ -6,11 +6,10 @@ GnuCashEngine.Initialize();
 
 void Demo()
 {
-    var uri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml,
-                             path: Path.Join(Directory.GetCurrentDirectory(), "netcash-demo.gnucash"));
+    var path = Path.Join(Directory.GetCurrentDirectory(), "netcash-demo.gnucash");
 
     // Creates an new empty book.
-    using var book = Book.Create(uri, true);
+    using var book = Book.Create(path, overwrite: true);
 
     // Creates chart of accounts.
     var checking = book
@@ -80,10 +79,9 @@ void Demo()
 
 void Adjust_Account_Tree()
 {
-    var uri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml,
-                             path: Path.Join(Directory.GetCurrentDirectory(), "netcash-adjust-tree.gnucash"));
+    var path = Path.Join(Directory.GetCurrentDirectory(), "netcash-adjust-tree.gnucash");
 
-    using var book = Book.Create(uri, true);
+    using var book = Book.Create(path, overwrite: true);
 
     var investments = book.GetOrMakeAssetAccount("Assets", "Investments");
     investments.NewCommodityAccount(CommodityType.Fund, "Fund - QWER", "Funds", "qwer");
@@ -135,10 +133,10 @@ void Adjust_Account_Tree()
 
 void Move_Transactions_By_Description()
 {
-    var uri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml,
-                             path: Path.Join(Directory.GetCurrentDirectory(), "netcash-move-transactions.gnucash"));
+    var path = Path.Join(Directory.GetCurrentDirectory(), "netcash-move-transactions.gnucash");
 
-    using var book = Book.Create(uri, true);
+    using var book = Book.Create(path, overwrite: true);
+
     var creditCard = book.GetOrMakeLiabilityAccount("Credit Card");
     var expenses = book.GetOrMakeExpenseAccount("Expenses");
     var auto = book.GetOrMakeLiabilityAccount("Expenses", "Auto");
@@ -162,10 +160,9 @@ void Move_Transactions_By_Description()
 
 void Hide_Zero_Balance_Stocks()
 {
-    var uri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml,
-                             path: Path.Join(Directory.GetCurrentDirectory(), "netcash-hide-zero-balance-stocks.gnucash"));
+    var path = Path.Join(Directory.GetCurrentDirectory(), "netcash-hide-zero-balance-stocks.gnucash");
 
-    using var book = Book.Create(uri, true);
+    using var book = Book.Create(path, overwrite: true);
 
     var checking = book.GetOrMakeAssetAccount("Assets", "Checking");
     var loan = book.GetOrMakeLiabilityAccount("Loan");
@@ -202,10 +199,9 @@ void Hide_Zero_Balance_Stocks()
 
 void Scrub_Realized_Gains()
 {
-    var uri = new GnuCashUri(scheme: GnuCashUri.UriSchemeXml,
-                             path: Path.Join(Directory.GetCurrentDirectory(), "netcash-scrub-realized-gains.gnucash"));
+    var path = Path.Join(Directory.GetCurrentDirectory(), "netcash-scrub-realized-gains.gnucash");
 
-    using var book = Book.Create(uri, true);
+    using var book = Book.Create(path, overwrite: true);
 
     var checking = book.GetOrMakeAssetAccount("Assets", "Checking");
     var loan = book.GetOrMakeLiabilityAccount("Loan");
