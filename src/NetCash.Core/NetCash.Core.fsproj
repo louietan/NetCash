@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="netcash.targets" />
+  <Import Project="NetCash.Core.targets" />
 
   <PropertyGroup>
+    <AssemblyName>netcash</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TargetFramework>net6.0</TargetFramework>
     <!-- implicit conversion; possible unverifiable code -->
@@ -20,7 +21,7 @@
     <Compile Include="Marshalling.fs" />
     <Compile Include="GncNumeric.fs" />
     <Compile Include="GnuCashObject.fs" />
-    <Compile Include="Core.fs" />
+    <Compile Include="Primitives.fs" />
     <Compile Include="ISOCurrencies.fs" />
     <Compile Include="Commodities.fs" />
     <Compile Include="PriceDB.fs" />

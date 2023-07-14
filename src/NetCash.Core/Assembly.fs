@@ -2,5 +2,5 @@
 
 open System.Runtime.CompilerServices
 
-[<InternalsVisibleTo("tests")>]
+[<InternalsVisibleTo("NetCash.Tests")>]
 ()

@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\netcash.fsproj" />
+    <ProjectReference Include="..\src\NetCash.Core\NetCash.Core.fsproj" />
   </ItemGroup>
 
   <Target Name="CleanTestData" BeforeTargets="GetCopyToOutputDirectoryItems">
