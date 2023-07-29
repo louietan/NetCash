@@ -222,6 +222,9 @@ type Book internal (session: nativeint) =
     /// Gets all accounts in this book.
     member self.Accounts = self.RootAccount.Descendants
 
+    /// Gets all top-level accounts in this book.
+    member self.ToplevelAccounts = self.RootAccount.Children
+
     /// <summary>Deletes an account.</summary>
     /// <remarks><list type="bullet">
     /// <item><description>The underlying native resource gets destroyed after this operation, although the managed Account object is still accessible, it becomes invalid, any usage afterwards would get unexpected result.</description></item>

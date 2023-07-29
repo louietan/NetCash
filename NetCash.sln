@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "examples\Example
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "docs", "docs\docs.fsproj", "{E124CA77-2939-473A-8F36-11D24192B4A3}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NetCash.CLI", "src\NetCash.CLI\NetCash.CLI.fsproj", "{E22683C7-342E-4CEA-9F49-87CAE8C2D09C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E124CA77-2939-473A-8F36-11D24192B4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E124CA77-2939-473A-8F36-11D24192B4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E124CA77-2939-473A-8F36-11D24192B4A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E22683C7-342E-4CEA-9F49-87CAE8C2D09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22683C7-342E-4CEA-9F49-87CAE8C2D09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E22683C7-342E-4CEA-9F49-87CAE8C2D09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E22683C7-342E-4CEA-9F49-87CAE8C2D09C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

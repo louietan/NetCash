@@ -13,7 +13,7 @@ module UI =
         let printInfo =
             Bindings.gnc_commodity_print_info (GnuCashObject.nativeHandle currency, showSymbol)
 
-        Bindings.gnc_print_amount_with_bidi_ltr_isolate (amount, printInfo)
+        Bindings.xaccPrintAmount (amount, printInfo)
         |> Bindings.g_strdup
         |> String.fromOwned
 
