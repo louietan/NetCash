@@ -1,7 +1,7 @@
-# GnuCashUri.GetHashCode method
+# GnuCashUri.Parse method
 
 ```csharp
-public override int GetHashCode()
+public static GnuCashUri Parse(string uri)
 ```
 
 ## See Also

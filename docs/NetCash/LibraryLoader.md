@@ -12,6 +12,7 @@ public static class LibraryLoader
 | --- | --- |
 | static [Activate](LibraryLoader/Activate.md)(…) | Activates the library loader for gnucash native libraries. |
 | static class [Executables](LibraryLoader.Executables.md) |  |
+| class [GnuCashRuntime](LibraryLoader.GnuCashRuntime.md) |  |
 
 ## See Also
 

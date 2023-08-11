@@ -6,10 +6,6 @@ Gets the currently opened book. Returns null when there's no book currently open
 public static Book Current { get; }
 ```
 
-## Remarks
-
-All the opened books are recorded on a stack. This property actually returns the top book from the stack. The stack pops when the top book gets disposed, you have to make sure every book is disposed timely and in proper order, otherwise it's going to be messed up :-/
-
 ## See Also
 
 * class [Book](../Book.md)

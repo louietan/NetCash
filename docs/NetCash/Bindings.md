@@ -276,6 +276,8 @@ public static class Bindings
 | static [gnc_uri_get_components](Bindings/gnc_uri_get_components.md)(…) |  |
 | static [gnc_uri_get_path](Bindings/gnc_uri_get_path.md)(…) |  |
 | static [gnc_uri_is_file_scheme](Bindings/gnc_uri_is_file_scheme.md)(…) |  |
+| static [gnc_uri_is_known_scheme](Bindings/gnc_uri_is_known_scheme.md)(…) |  |
+| static [gnc_uri_is_uri](Bindings/gnc_uri_is_uri.md)(…) |  |
 | static [gnc_uri_normalize_uri](Bindings/gnc_uri_normalize_uri.md)(…) |  |
 | static [gnc_uri_targets_local_fs](Bindings/gnc_uri_targets_local_fs.md)(…) |  |
 | static [gnc_vcs_rev](Bindings/gnc_vcs_rev.md)() |  |

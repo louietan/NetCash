@@ -1,20 +1,7 @@
-# GnuCashUri constructor (1 of 2)
+# GnuCashUri constructor
 
 ```csharp
-public GnuCashUri(string uriString)
-```
-
-## See Also
-
-* class [GnuCashUri](../GnuCashUri.md)
-* namespace [NetCash](../../netcash.md)
-
----
-
-# GnuCashUri constructor (2 of 2)
-
-```csharp
-public GnuCashUri(string scheme, string host, int port, string userName, string password, 
+public GnuCashUri(string scheme, string host, int port, string username, string password, 
     string path)
 ```
 

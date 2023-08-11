@@ -3,7 +3,7 @@
 Saves current book to another URI.
 
 ```csharp
-public Book SaveAs(GnuCashUri uri)
+public Book SaveAs(GnuCashUri uri, bool overwrite = false)
 ```
 
 ## Return Value

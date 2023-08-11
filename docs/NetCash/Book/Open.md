@@ -21,8 +21,6 @@ public static Book Open(GnuCashUri uri, bool ignoreLock = false)
 
 For XML backend, when it opens a book for writing, it creates a backup file with timestamp "YYYYMMDDHHMMSS" in the name. So if your code tries to open/close a book twice within one second, the latter session will try to make a backup file with the same name created by previous session, and it's going to fail with ERR_FILEIO_BACKUP_ERROR, because the backup file is created using the combination of O_CREAT and O_EXCL, which disallows overwriting an existing file.
 
-There is a quick fix that I don't recommend, which is to call `Bindings.gnc_prefs_set_file_retention_policy(Bindings.XMLFileRetentionType.XML_RETAIN_NONE)` (it only updates the in-memory value without touching the preference database). I have to warn you that this is not to disable the backup, it is to tell the backend to delete all the backup and log files of the book when finishes saving!!! which might not be what you want!
-
 ## See Also
 
 * class [GnuCashUri](../GnuCashUri.md)

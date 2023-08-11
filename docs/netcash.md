@@ -5,11 +5,10 @@
 | public type | description |
 | --- | --- |
 | class [Account](./NetCash/Account.md) | An account. |
-| abstract class [AccountFinder](./NetCash/AccountFinder.md) |  |
 | class [AccountNotFoundException](./NetCash/AccountNotFoundException.md) |  |
 | abstract class [BaseQuery&lt;a,b&gt;](./NetCash/BaseQuery-2.md) |  |
 | static class [Bindings](./NetCash/Bindings.md) | Partial bindings for native libraries (libgnucash and glibc). |
-| class [Book](./NetCash/Book.md) | A book is the container for data stored in a gnucash database. In the design of gnucash, Session and Book are two separate abstractions. Session represents the connection to the backend storage, while Book represents the container for domain objects, like Accounts, Transactions, Splits etc. For simplicity, NetCash combined the two concepts into one and just called it Book. Additionally, Book also serves as the "Factory" to create some accounting objects, like Accounts and Transactions. |
+| class [Book](./NetCash/Book.md) | A book is the container for data stored in a gnucash database. In the design of gnucash, Session and Book are two separate abstractions. Session represents the connection to the backend storage, while Book represents the container for domain objects, like Accounts, Transactions, Splits etc. For simplicity, NetCash combined the two concepts into one and just called it Book. Additionally, Book also serves as the "Factory" to create some accounting objects, like Accounts and Transactions. Opening multiple books at the same time is not supported and doing so will cause an exception to be thrown. |
 | class [Commodity](./NetCash/Commodity.md) | Commodity |
 | class [CommodityNamespace](./NetCash/CommodityNamespace.md) |  |
 | class [CommodityTable](./NetCash/CommodityTable.md) | For manipulating commodity-related data like commodities, currencies, commodity namespaces. |

@@ -1,29 +1,30 @@
 # GnuCashUri class
 
 ```csharp
-public class GnuCashUri
+public sealed class GnuCashUri : IComparable, IComparable<GnuCashUri>, IEquatable<GnuCashUri>, 
+    IStructuralComparable, IStructuralEquatable
 ```
 
 ## Public Members
 
 | name | description |
 | --- | --- |
-| [GnuCashUri](GnuCashUri/GnuCashUri.md)(…) |  (2 constructors) |
+| [GnuCashUri](GnuCashUri/GnuCashUri.md)(…) |  |
+| static [Parse](GnuCashUri/Parse.md)(…) |  |
 | [Host](GnuCashUri/Host.md) { get; } |  |
 | [IsFile](GnuCashUri/IsFile.md) { get; } |  |
 | [Password](GnuCashUri/Password.md) { get; } |  |
 | [Path](GnuCashUri/Path.md) { get; } |  |
 | [Port](GnuCashUri/Port.md) { get; } |  |
 | [Scheme](GnuCashUri/Scheme.md) { get; } |  |
-| [UserName](GnuCashUri/UserName.md) { get; } |  |
-| override [Equals](GnuCashUri/Equals.md)(…) |  |
-| override [GetHashCode](GnuCashUri/GetHashCode.md)() |  |
+| [Username](GnuCashUri/Username.md) { get; } |  |
 | override [ToString](GnuCashUri/ToString.md)() |  |
-| static [UriSchemeFile](GnuCashUri/UriSchemeFile.md) { get; } |  |
-| static [UriSchemeMySQL](GnuCashUri/UriSchemeMySQL.md) { get; } |  |
-| static [UriSchemePostgreSQL](GnuCashUri/UriSchemePostgreSQL.md) { get; } |  |
-| static [UriSchemeSqlite](GnuCashUri/UriSchemeSqlite.md) { get; } |  |
-| static [UriSchemeXml](GnuCashUri/UriSchemeXml.md) { get; } |  |
+| static [SchemeFile](GnuCashUri/SchemeFile.md) { get; } |  |
+| static [SchemeMySQL](GnuCashUri/SchemeMySQL.md) { get; } |  |
+| static [SchemePostgreSQL](GnuCashUri/SchemePostgreSQL.md) { get; } |  |
+| static [SchemeSqlite](GnuCashUri/SchemeSqlite.md) { get; } |  |
+| static [SchemeXml](GnuCashUri/SchemeXml.md) { get; } |  |
+| [implicit operator](GnuCashUri/op_Implicit.md) |  |
 
 ## See Also
 

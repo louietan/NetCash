@@ -1,7 +1,7 @@
-# GnuCashUri.UserName property
+# GnuCashUri.SchemeXml property
 
 ```csharp
-public string UserName { get; }
+public static string SchemeXml { get; }
 ```
 
 ## See Also

@@ -1,6 +1,6 @@
 # Book class
 
-A book is the container for data stored in a gnucash database. In the design of gnucash, Session and Book are two separate abstractions. Session represents the connection to the backend storage, while Book represents the container for domain objects, like Accounts, Transactions, Splits etc. For simplicity, NetCash combined the two concepts into one and just called it Book. Additionally, Book also serves as the "Factory" to create some accounting objects, like Accounts and Transactions.
+A book is the container for data stored in a gnucash database. In the design of gnucash, Session and Book are two separate abstractions. Session represents the connection to the backend storage, while Book represents the container for domain objects, like Accounts, Transactions, Splits etc. For simplicity, NetCash combined the two concepts into one and just called it Book. Additionally, Book also serves as the "Factory" to create some accounting objects, like Accounts and Transactions. Opening multiple books at the same time is not supported and doing so will cause an exception to be thrown.
 
 ```csharp
 public class Book : IDisposable, INativeWrapper
@@ -23,6 +23,7 @@ public class Book : IDisposable, INativeWrapper
 | [PriceDB](Book/PriceDB.md) { get; } | Gets the price database. |
 | [RootAccount](Book/RootAccount.md) { get; } | Gets the (hidden) root account. |
 | [SessionHandle](Book/SessionHandle.md) { get; } | Gets the native pointer to session. |
+| [ToplevelAccounts](Book/ToplevelAccounts.md) { get; } | Gets all top-level accounts in this book. |
 | [URI](Book/URI.md) { get; } | Gets the URI for this book. |
 | [UseTradingAccounts](Book/UseTradingAccounts.md) { get; } | Gets whether this book was configured to use trading accounts. |
 | [Close](Book/Close.md)() | Closes this book. |

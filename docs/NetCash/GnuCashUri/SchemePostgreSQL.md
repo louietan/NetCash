@@ -1,7 +1,7 @@
-# GnuCashUri.UriSchemeXml property
+# GnuCashUri.SchemePostgreSQL property
 
 ```csharp
-public static string UriSchemeXml { get; }
+public static string SchemePostgreSQL { get; }
 ```
 
 ## See Also

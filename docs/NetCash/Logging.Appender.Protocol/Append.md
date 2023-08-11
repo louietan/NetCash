@@ -1,7 +1,7 @@
 # Logging.Appender.Protocol.Append method
 
 ```csharp
-public Task Append(string P_0)
+public void Append(string P_0)
 ```
 
 ## See Also
